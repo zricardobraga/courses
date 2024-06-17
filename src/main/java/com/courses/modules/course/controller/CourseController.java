@@ -3,6 +3,7 @@ package com.courses.modules.course.controller;
 import com.courses.modules.ENUM.StatusEnum;
 import com.courses.modules.course.UseCases.CourseUseCase;
 import com.courses.modules.course.entity.CourseEntity;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class CourseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register (@RequestBody CourseEntity courseEntity) {
+    public ResponseEntity<Object> register ( @Valid @RequestBody CourseEntity courseEntity) {
         try {
             courseEntity.setStatus(StatusEnum.ACTIVE);
             var result = this.courseUseCase.register(courseEntity);
@@ -43,7 +44,7 @@ public class CourseController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> update(@PathVariable UUID id, @RequestBody Map<String, Object> data){
+    public ResponseEntity<Object> update(@PathVariable UUID id,  @Valid @RequestBody Map<String, Object> data){
 
         if (data.get("name").toString().isEmpty() || data.get("category").toString().isEmpty()) {
             return ResponseEntity.badRequest().body("Name or Category are empty");
